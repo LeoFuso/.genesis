@@ -1,0 +1,2 @@
+# Genesis
+Environment configuration script
