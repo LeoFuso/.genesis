@@ -46,7 +46,7 @@ cd '.environment' || exit 1
 if [[ -n "${PROFILE_BRANCH_ARG}" ]]
 then
     echo "Switching to '${PROFILE_BRANCH_ARG}' profile.";
-    git switch --guess "${PROFILE_BRANCH_ARG}";
+    git switch "${PROFILE_BRANCH_ARG}" 2>/dev/null || git switch -c "${PROFILE_BRANCH_ARG}";
 fi
 
 chmod +x './bootstrap.sh'
