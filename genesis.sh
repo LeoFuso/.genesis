@@ -16,7 +16,7 @@ then
 fi
 
 type -p ccr >/dev/null || (sudo apt install codecrypt -y)
-ccr --import-secret < "${PRIVATE_KEY_PATH}"
+ccr --import-secret < "${PRIVATE_KEY_PATH_ARG}" || { echo "Unable to import private key at '${PRIVATE_KEY_PATH_ARG}'."; exit; }
 
 ### Git
 type -p git >/dev/null || (sudo apt install git -y)
