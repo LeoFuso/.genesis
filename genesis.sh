@@ -2,10 +2,7 @@
 
 echo '... Let there be light'
 
-### First Update
-sudo apt update && sudo apt upgrade -y
-
-### Codecrypt
+### Fetching PK...
 PRIVATE_KEY_PATH_ARG="${1:-$PRIVATE_KEY_PATH}"
 
 if [[ -z "${PRIVATE_KEY_PATH_ARG}" ]]
@@ -16,6 +13,10 @@ then
     exit 1;
 fi
 
+### First Update
+sudo apt update && sudo apt upgrade -y
+
+### Codecrypt
 type -p ccr >/dev/null || (sudo apt install codecrypt -y)
 ccr --import-secret < "${PRIVATE_KEY_PATH_ARG}" || { echo "Unable to import private key at '${PRIVATE_KEY_PATH_ARG}'."; exit 1; }
 
@@ -38,8 +39,8 @@ GH_TOKEN=$(ccr -dv < 'encrypted/.gh-token')
 
 export GH_TOKEN
 cd "${HOME}" || exit 1
-gh repo clone 'LeoFuso/.environment'
+gh repo clone 'LeoFuso/.environment' || exit 1
 cd '.environment' || exit 1
 
-source ./bootstrap.sh
-
+chmod +x './bootstrap.sh'
+source './bootstrap.sh'
