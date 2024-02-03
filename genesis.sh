@@ -36,6 +36,7 @@ curl -fsSL 'https://cli.github.com/packages/githubcli-archive-keyring.gpg' | sud
 GH_TOKEN=$(ccr -dv < 'encrypted/.gh-token')
 
 export GH_TOKEN
+cd "${HOME}" || exit
 gh repo clone 'LeoFuso/.environment'
 cd '.environment' || exit
 
