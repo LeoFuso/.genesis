@@ -18,13 +18,17 @@ fi
 sudo apt update && sudo apt upgrade -y
 
 ### Codecrypt
+echo 'At first, Codecrypt...'
 type -p ccr >/dev/null || (sudo apt install codecrypt -y)
 ccr --yes --import-secret < "${PRIVATE_KEY_PATH_ARG}" || { echo "Unable to import private key at '${PRIVATE_KEY_PATH_ARG}'."; exit 1; }
 
 ### Git
+echo '... and Git on the first day.'
 type -p git >/dev/null || (sudo apt install git -y)
 
 ### GitHub && GitHub's CLI
+echo 'GitHub && GitHub'\''s CLI... on the second day.'
+
 type -p curl >/dev/null || (sudo apt install curl -y)
 curl -fsSL 'https://cli.github.com/packages/githubcli-archive-keyring.gpg' | sudo dd of='/usr/share/keyrings/githubcli-archive-keyring.gpg' \
 && sudo chmod go+r '/usr/share/keyrings/githubcli-archive-keyring.gpg' \
@@ -36,6 +40,7 @@ curl -fsSL 'https://cli.github.com/packages/githubcli-archive-keyring.gpg' | sud
 && (type -p gh >/dev/null || (sudo apt install gh -y))
 
 ### Environment
+echo 'On the third day, Environment.'
 GH_TOKEN=$(ccr -dv < 'encrypted/.gh-token')
 
 export GH_TOKEN
@@ -49,5 +54,6 @@ then
     git switch "${PROFILE_BRANCH_ARG}" 2>/dev/null || git switch -c "${PROFILE_BRANCH_ARG}";
 fi
 
+echo 'Bootstrap it all.'
 chmod +x './bootstrap.sh'
 source './bootstrap.sh'
