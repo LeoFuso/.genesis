@@ -4,6 +4,7 @@ echo '... Let there be light'
 
 ### Fetching PK...
 PRIVATE_KEY_PATH_ARG="${1:-$PRIVATE_KEY_PATH}"
+PROFILE_BRANCH_ARG="${2:-$PROFILE_BRANCH}"
 
 if [[ -z "${PRIVATE_KEY_PATH_ARG}" ]]
 then
@@ -41,6 +42,12 @@ export GH_TOKEN
 cd "${HOME}" || exit 1
 gh repo clone 'LeoFuso/.environment' || exit 1
 cd '.environment' || exit 1
+
+if [[ -n "${PROFILE_BRANCH_ARG}" ]]
+then
+    echo "Switching to '${PROFILE_BRANCH_ARG}' profile.";
+    git switch --guess "${PROFILE_BRANCH_ARG}";
+fi
 
 chmod +x './bootstrap.sh'
 source './bootstrap.sh'
