@@ -10,13 +10,14 @@ PRIVATE_KEY_PATH_ARG="${1:-$PRIVATE_KEY_PATH}"
 
 if [[ -z "${PRIVATE_KEY_PATH_ARG}" ]]
 then
-    echo "Genesis requires an non-empty path to its private key."
-    echo "Specify the path by passing it as the first positional argument or by supplying it with a 'PRIVATE_KEY_PATH' environment variable."
-    echo "./genesis.sh 'path' || export PRIVATE_KEY_PATH='path' && ./genesis.sh"
+    echo "Genesis requires an non-empty path to its private key.";
+    echo "Specify the path by passing it as the first positional argument or by supplying it with a 'PRIVATE_KEY_PATH' environment variable.";
+    echo "./genesis.sh 'path' || export PRIVATE_KEY_PATH='path' && ./genesis.sh";
+    exit 1;
 fi
 
 type -p ccr >/dev/null || (sudo apt install codecrypt -y)
-ccr --import-secret < "${PRIVATE_KEY_PATH_ARG}" || { echo "Unable to import private key at '${PRIVATE_KEY_PATH_ARG}'."; exit; }
+ccr --import-secret < "${PRIVATE_KEY_PATH_ARG}" || { echo "Unable to import private key at '${PRIVATE_KEY_PATH_ARG}'."; exit 1; }
 
 ### Git
 type -p git >/dev/null || (sudo apt install git -y)
@@ -36,9 +37,9 @@ curl -fsSL 'https://cli.github.com/packages/githubcli-archive-keyring.gpg' | sud
 GH_TOKEN=$(ccr -dv < 'encrypted/.gh-token')
 
 export GH_TOKEN
-cd "${HOME}" || exit
+cd "${HOME}" || exit 1
 gh repo clone 'LeoFuso/.environment'
-cd '.environment' || exit
+cd '.environment' || exit 1
 
 source ./bootstrap.sh
 
