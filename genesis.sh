@@ -2,9 +2,12 @@
 
 echo '... Let there be light'
 
+### Root
+ENVIRONMENT_BOOTSTRAP_ROOT="$(pwd)"
+export ENVIRONMENT_BOOTSTRAP_ROOT
+
 ### Fetching PK...
 PRIVATE_KEY_PATH_ARG="${1:-$PRIVATE_KEY_PATH}"
-PROFILE_BRANCH_ARG="${2:-$PROFILE_BRANCH}"
 
 if [[ -z "${PRIVATE_KEY_PATH_ARG}" ]]
 then
@@ -23,11 +26,10 @@ type -p ccr >/dev/null || (sudo apt-get install -y codecrypt)
 ccr --yes --import-secret < "${PRIVATE_KEY_PATH_ARG}" || { echo "Unable to import private key at '${PRIVATE_KEY_PATH_ARG}'."; exit 1; }
 
 ### Git
-echo '... and Git on the first day.'
-type -p git >/dev/null || (sudo apt-get install -y git)
+type -p ssh-key >/dev/null || (sudo apt-get install -y ssh-key)
 
 ### GitHub && GitHub's CLI
-echo 'GitHub && GitHub'\''s CLI... on the second day.'
+echo 'GitHub && GitHub'\''s CLI... on the first day.'
 
 type -p curl >/dev/null || (sudo apt-get install -y curl)
 curl -fsSL 'https://cli.github.com/packages/githubcli-archive-keyring.gpg' | sudo dd of='/usr/share/keyrings/githubcli-archive-keyring.gpg' \
@@ -39,21 +41,17 @@ curl -fsSL 'https://cli.github.com/packages/githubcli-archive-keyring.gpg' | sud
 && sudo apt update \
 && (type -p gh >/dev/null || (sudo apt-get install -y gh))
 
-### Environment
-echo 'On the third day, Environment.'
-GH_TOKEN=$(ccr -dv < 'encrypted/.gh-token')
-export GH_TOKEN
+echo 'On the second day, Environment.'
+chmod +x terminal.sh
+PROFILE_BRANCH_ARG="${2:-$PROFILE_BRANCH}" ./terminal.sh
+zsh
 
-cd "${HOME}" || exit 1
-gh repo clone 'LeoFuso/.environment' || exit 1
-cd '.environment' || exit 1
+echo 'On the third day, ssh-key management.'
+chmod +x ssh-key.sh
+./ssh-key.sh
 
-if [[ -n "${PROFILE_BRANCH_ARG}" ]]
-then
-    echo "Switching to '${PROFILE_BRANCH_ARG}' profile.";
-    git switch "${PROFILE_BRANCH_ARG}" 2>/dev/null || git switch -c "${PROFILE_BRANCH_ARG}";
-fi
+echo 'On the fourth day, land.'
+chmod +x land.sh
+./land.sh
 
-echo 'Bootstrap it all.'
-chmod +x bootstrap.sh
-GH_TOKEN="${GH_TOKEN}" bash bootstrap.sh
+echo '... and it was all good.'
