@@ -16,7 +16,7 @@ type -p aws >/dev/null || (
   && sudo ./aws/install || exit 1;
   cd "${ENVIRONMENT_BOOTSTRAP_ROOT}" || exit 1;
   rm -rf "${AWS_TEMP_DIR}";
-)
+) || exit 1
 
 ### Common step...
 if [ ! -d '/etc/apt/keyrings' ]; then
@@ -31,7 +31,7 @@ type -p kubectl >/dev/null || (
   curl -fsSL 'https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key' | sudo gpg --dearmor -o '/etc/apt/keyrings/kubernetes-apt-keyring.gpg';
   echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee '/etc/apt/sources.list.d/kubernetes.list';
   sudo apt update && sudo apt-get install -y kubectl;
-)
+) || exit 1
 
 kubectl krew help >/dev/null || (
   set -x; cd "$(mktemp -d)" &&
@@ -44,17 +44,20 @@ kubectl krew help >/dev/null || (
   export PATH="${KREW_ROOT:-${HOME}/.krew}/bin:${PATH}" &&
   kubectl krew update && kubectl krew install stern;
   .dot reset HEAD --hard
-)
+) || exit 1
 
 ### Redis
-type -p redis-cli >/dev/null || (sudo apt-get install -y redis-tools)
+type -p redis-cli >/dev/null || (sudo apt-get install -y redis-tools) || exit 1
 
 ### SDKMan!
-type -p sdk >/dev/null || (curl -s 'https://get.sdkman.io' | zsh)
+type -p unzip >/dev/null || (sudo apt-get install -y unzip)
+type -p zip >/dev/null || (sudo apt-get install -y zip)
+type -p curl >/dev/null || (sudo apt-get install -y curl)
+type -p sdk >/dev/null || (curl -s 'https://get.sdkman.io' | zsh) || exit 1
 .dot reset HEAD --hard
 
 ### Node Version Manager
-type -p nvm >/dev/null || (curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | zsh)
+type -p nvm >/dev/null || (curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | zsh) || exit 1
 .dot reset HEAD --hard
 
 ### Docker
@@ -72,14 +75,16 @@ type -p docker >/dev/null || (
   sudo systemctl enable docker.service;
   sudo systemctl enable containerd.service;
   sudo cp docker/daemon.json '/etc/docker/daemon.json';
-)
+) || exit 1
 
 ### Adb
-type -p adb >/dev/null || (sudo apt-get install -y adb)
+type -p adb >/dev/null || (sudo apt-get install -y adb) || exit 1
+
+exit 0
 
 ### Anaconda
 type -p conda >/dev/null || (
-  sudo apt-get install -y libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6;
+  sudo apt-get install -y libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6;
   CONDA_VERSION='Anaconda3-2023.09-0-Linux-x86_64.sh';
   CONDA_TEMP_DIR="${HOME}/.conda-temp";
   mkdir "${CONDA_TEMP_DIR}";
@@ -89,4 +94,4 @@ type -p conda >/dev/null || (
   cd "${ENVIRONMENT_BOOTSTRAP_ROOT}" || exit 1;
   rm -rf "${CONDA_TEMP_DIR}";
   .dot reset HEAD --hard
-)
+) || exit 1
