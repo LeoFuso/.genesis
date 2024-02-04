@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 ### Environment
 GH_TOKEN=$(ccr -dv < 'encrypted/.gh-token')
