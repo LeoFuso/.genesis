@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 ### .dot
 # shellcheck disable=SC2139

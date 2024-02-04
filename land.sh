@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 ### .dot
 # shellcheck disable=SC2139
@@ -50,11 +50,11 @@ kubectl krew help >/dev/null || (
 type -p redis-cli >/dev/null || (sudo apt-get install -y redis-tools)
 
 ### SDKMan!
-type -p sdk >/dev/null || (curl -s 'https://get.sdkman.io' | bash)
+type -p sdk >/dev/null || (curl -s 'https://get.sdkman.io' | zsh)
 .dot reset HEAD --hard
 
 ### Node Version Manager
-type -p nvm >/dev/null || (curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash)
+type -p nvm >/dev/null || (curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | zsh)
 .dot reset HEAD --hard
 
 ### Docker
@@ -85,7 +85,7 @@ type -p conda >/dev/null || (
   mkdir "${CONDA_TEMP_DIR}";
   cd "${CONDA_TEMP_DIR}" || exit 1;
   curl -O "https://repo.anaconda.com/archive/${CONDA_VERSION}";
-  bash "${CONDA_VERSION}" -b;
+  zsh "${CONDA_VERSION}" -b;
   cd "${ENVIRONMENT_BOOTSTRAP_ROOT}" || exit 1;
   rm -rf "${CONDA_TEMP_DIR}";
   .dot reset HEAD --hard
