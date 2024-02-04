@@ -56,4 +56,4 @@ fi
 
 echo 'Bootstrap it all.'
 chmod +x bootstrap.sh
-export GH_TOKEN="${GH_TOKEN}" ./bootstrap.sh
+GH_TOKEN="${GH_TOKEN}" bash bootstrap.sh
