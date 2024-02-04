@@ -53,7 +53,7 @@ type -p redis-cli >/dev/null || (sudo apt-get install -y redis-tools) || exit 1
 type -p unzip >/dev/null || (sudo apt-get install -y unzip)
 type -p zip >/dev/null || (sudo apt-get install -y zip)
 type -p curl >/dev/null || (sudo apt-get install -y curl)
-type -p sdk >/dev/null || (curl -s 'https://get.sdkman.io' | zsh) || exit 1
+type -p sdk >/dev/null || (curl -s 'https://get.sdkman.io' | bash) || exit 1
 .dot reset HEAD --hard
 
 ### Node Version Manager
