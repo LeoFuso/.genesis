@@ -42,8 +42,8 @@ curl -fsSL 'https://cli.github.com/packages/githubcli-archive-keyring.gpg' | sud
 ### Environment
 echo 'On the third day, Environment.'
 GH_TOKEN=$(ccr -dv < 'encrypted/.gh-token')
-
 export GH_TOKEN
+
 cd "${HOME}" || exit 1
 gh repo clone 'LeoFuso/.environment' || exit 1
 cd '.environment' || exit 1
@@ -56,5 +56,5 @@ fi
 
 echo 'Bootstrap it all.'
 
-chmod +x './bootstrap.sh'
-source './bootstrap.sh' "$(pwd)"
+chmod +x 'bootstrap.sh'
+export GH_TOKEN=$GH_TOKEN bash 'bootstrap.sh'
