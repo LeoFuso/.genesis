@@ -1,5 +1,10 @@
 #!/bin/bash
 
+### .dot
+# shellcheck disable=SC2139
+alias .dot="git --git-dir ${HOME}/.environment/.git/ --work-tree ${HOME}"
+.dot config --local status.showUntrackedFiles no
+
 ### AWS Cli
 type -p unzip >/dev/null || (sudo apt-get install -y unzip)
 type -p aws >/dev/null || (
@@ -38,19 +43,19 @@ kubectl krew help >/dev/null || (
   ./"${KREW}" install krew &&
   export PATH="${KREW_ROOT:-${HOME}/.krew}/bin:${PATH}" &&
   kubectl krew update && kubectl krew install stern;
-  .dot checkout .
+  .dot reset HEAD --hard
 )
 
 ### Redis
 type -p redis-cli >/dev/null || (sudo apt-get install -y redis-tools)
 
 ### SDKMan!
-type -p sdk >/dev/null || (curl -s 'curl -s "https://get.sdkman.io' | bash)
-.dot checkout .
+type -p sdk >/dev/null || (curl -s 'https://get.sdkman.io' | bash)
+.dot reset HEAD --hard
 
 ### Node Version Manager
 type -p nvm >/dev/null || (curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash)
-.dot checkout .
+.dot reset HEAD --hard
 
 ### Docker
 type -p docker >/dev/null || (
@@ -83,5 +88,5 @@ type -p conda >/dev/null || (
   bash "${CONDA_VERSION}" -b;
   cd "${ENVIRONMENT_BOOTSTRAP_ROOT}" || exit 1;
   rm -rf "${CONDA_TEMP_DIR}";
-  .dot checkout .
+  .dot reset HEAD --hard
 )

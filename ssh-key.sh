@@ -1,5 +1,10 @@
 #!/bin/bash
 
+### .dot
+# shellcheck disable=SC2139
+alias .dot="git --git-dir ${HOME}/.environment/.git/ --work-tree ${HOME}"
+.dot config --local status.showUntrackedFiles no
+
 ### SSH Generation
 SSH_KEY="${HOME}/.ssh/id_ed25519";
 if [[ ! -f "${SSH_KEY}" ]]

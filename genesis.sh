@@ -44,14 +44,15 @@ curl -fsSL 'https://cli.github.com/packages/githubcli-archive-keyring.gpg' | sud
 echo 'On the second day, Environment.'
 chmod +x terminal.sh
 PROFILE_BRANCH_ARG="${2:-$PROFILE_BRANCH}" ./terminal.sh
-zsh
 
 echo 'On the third day, ssh-key management.'
 chmod +x ssh-key.sh
-./ssh-key.sh
+zsh ./ssh-key.sh
 
 echo 'On the fourth day, land.'
 chmod +x land.sh
-./land.sh
+zsh ./land.sh
 
 echo '... and it was all good.'
+
+zsh

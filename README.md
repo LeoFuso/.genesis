@@ -25,3 +25,5 @@ chmod +x genesis.sh
 
 This project is just a convenience and was made with personal use in mind, but feel free to 
 copy it. Go nuts.
+
+Ref. https://www.ackama.com/what-we-think/the-best-way-to-store-your-dotfiles-a-bare-git-repository-explained/
