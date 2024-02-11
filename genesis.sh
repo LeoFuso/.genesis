@@ -42,16 +42,16 @@ curl -fsSL 'https://cli.github.com/packages/githubcli-archive-keyring.gpg' | sud
 && (type -p gh >/dev/null || (sudo apt-get install -y gh))
 
 echo 'On the second day, Environment.'
-chmod +x terminal.sh
-PROFILE_BRANCH_ARG="${2:-$PROFILE_BRANCH}" ./terminal.sh
+chmod +x environment.sh
+PROFILE_BRANCH_ARG="${2:-$PROFILE_BRANCH}" ./environment.sh
 
 echo 'On the third day, ssh-key management.'
 chmod +x ssh-key.sh
 zsh ./ssh-key.sh
 
-echo 'On the fourth day, land.'
-chmod +x land.sh
-zsh ./land.sh
+echo 'On the fourth day, animals.'
+chmod +x animals.sh
+zsh ./animals.sh
 
 echo '... and it was all good.'
 

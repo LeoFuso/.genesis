@@ -42,4 +42,11 @@ fc-cache -f -v >/dev/null
 
 sudo chsh -s "$(which zsh)"
 
+# Fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}/.fzf" \
+  && zsh "${HOME}/.fzf/install" --key-bindings --completin --no-update-rc
+
+# ZPlug
+curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+
 exit 0

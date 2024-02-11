@@ -5,6 +5,9 @@
 alias .dot="git --git-dir ${HOME}/.environment/.git/ --work-tree ${HOME}"
 .dot config --local status.showUntrackedFiles no
 
+### Crontab
+crontab crontab/crontab.config
+
 ### AWS Cli
 type -p unzip >/dev/null || (sudo apt-get install -y unzip)
 type -p aws >/dev/null || (
@@ -79,6 +82,10 @@ type -p docker >/dev/null || (
 
 ### Adb
 type -p adb >/dev/null || (sudo apt-get install -y adb) || exit 1
+
+### zplug
+zplug install
+zplug load --verbose
 
 exit 0
 
