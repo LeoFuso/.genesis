@@ -9,6 +9,7 @@ alias .dot="git --git-dir ${HOME}/.environment/.git/ --work-tree ${HOME}"
 crontab crontab/crontab.config
 
 ### AWS Cli
+echo 'Installing AWS Cli...'
 type -p unzip >/dev/null || (sudo apt-get install -y unzip)
 type -p aws >/dev/null || (
   AWS_TEMP_DIR="${HOME}/.aws-temp";
@@ -20,6 +21,7 @@ type -p aws >/dev/null || (
   cd "${ENVIRONMENT_BOOTSTRAP_ROOT}" || exit 1;
   rm -rf "${AWS_TEMP_DIR}";
 ) || exit 1
+echo 'AWS Cli... done.'
 
 ### Common step...
 if [ ! -d '/etc/apt/keyrings' ]; then
@@ -30,6 +32,7 @@ dpkg -L apt-transport-https >/dev/null || sudo apt-get install -y apt-transport-
 dpkg -L ca-certificates >/dev/null || sudo apt-get install -y ca-certificates
 
 ### Kubectl, Krew && Stern
+echo 'Installing Kubectl, Krew & Stern...'
 type -p kubectl >/dev/null || (
   curl -fsSL 'https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key' | sudo gpg --dearmor -o '/etc/apt/keyrings/kubernetes-apt-keyring.gpg';
   echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee '/etc/apt/sources.list.d/kubernetes.list';
@@ -48,22 +51,30 @@ kubectl krew help >/dev/null || (
   kubectl krew update && kubectl krew install stern;
   .dot reset HEAD --hard
 ) || exit 1
+echo 'Kubectl, Krew & Stern... done.'
 
 ### Redis
+echo 'Installing Redis...'
 type -p redis-cli >/dev/null || (sudo apt-get install -y redis-tools) || exit 1
+echo 'Redis... done.'
 
 ### SDKMan!
+echo 'Installing SDKMan!...'
 type -p unzip >/dev/null || (sudo apt-get install -y unzip)
 type -p zip >/dev/null || (sudo apt-get install -y zip)
 type -p curl >/dev/null || (sudo apt-get install -y curl)
 type -p sdk >/dev/null || (curl -s 'https://get.sdkman.io' | bash) || exit 1
 .dot reset HEAD --hard
+echo 'SDKMan!... done'
 
 ### Node Version Manager
+echo 'Installing Node Version Manager...'
 type -p nvm >/dev/null || (curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | zsh) || exit 1
 .dot reset HEAD --hard
+echo 'Node Version Manager... done.'
 
 ### Docker
+echo 'Installing Docker...'
 type -p docker >/dev/null || (
   sudo curl -fsSL 'https://download.docker.com/linux/ubuntu/gpg' -o '/etc/apt/keyrings/docker.asc';
   sudo chmod a+r '/etc/apt/keyrings/docker.asc';
@@ -79,13 +90,28 @@ type -p docker >/dev/null || (
   sudo systemctl enable containerd.service;
   sudo cp docker/daemon.json '/etc/docker/daemon.json';
 ) || exit 1
+echo 'Docker... done.'
 
 ### Adb
+echo 'Installing adb...'
 type -p adb >/dev/null || (sudo apt-get install -y adb) || exit 1
+echo 'adb... done.'
 
 ### zplug
+echo 'Performing ZPlug plugin install...'
 zplug install
 zplug load --verbose
+echo 'ZPlug plugin install... done.'
+
+### Yubico
+echo 'Installing Yubico Authenticator & YubiKey Manager...'
+type -p pcscd >/dev/null || ( sudo apt-get install -y  pcscd && systemctl enable --now pcscd )
+sudo add-apt-repository -y ppa:yubico/stable && sudo apt-get update
+type -p ykman >/dev/null || ( sudo apt-get install -y yubikey-manager )
+dpkg -S libpam-yubico &> /dev/null || ( sudo apt-get install -y libpam-yubico )
+dpkg -S yubioath-desktop &> /dev/null || ( sudo apt-get install -y yubioath-desktop )
+dpkg -S yubikey-manager-qt &> /dev/null || ( sudo apt-get install -y yubikey-manager-qt )
+echo 'Yubico Authenticator & YubiKey Manager... done.'
 
 exit 0
 
